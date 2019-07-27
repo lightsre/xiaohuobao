@@ -20,6 +20,7 @@ from web import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^$', views.web_login),
+    url(r'^$', views.web_home),
+    url(r'^login', views.login_view),
     path('web/', include('web.urls', namespace='web')),
 ]
