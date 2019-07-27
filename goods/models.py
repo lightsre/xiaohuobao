@@ -10,14 +10,14 @@ class Goods_name(models.Model):
 class Goods_in(models.Model):
     in_id = models.AutoField(primary_key=True)
     name_id = models.IntegerField()
-    in_price = models.FloatField(max_digits=19, decimal_places=10)
+    in_price = models.FloatField()
     in_number = models.IntegerField()
     in_time = models.DateField(auto_now_add=True)
 
 class Goods_out(models.Model):
     out_id = models.AutoField(primary_key=True)
     name_id = models.IntegerField()
-    out_price = models.FloatField(max_digits=19, decimal_places=10)
+    out_price = models.FloatField()
     out_number = models.IntegerField()
     out_time = models.DateField(auto_now_add=True)
 
@@ -25,5 +25,5 @@ class Goods_profit(models.Model):
     profit_id = models.AutoField(primary_key=True)
     name_id = models.IntegerField()
     profit_number = models.IntegerField()
-    profit_price = models.FloatField(max_digits=19, decimal_places=10)
-    all_price = models.FloatField(max_digits=20, decimal_places=10)
+    profit_price = models.FloatField()
+    all_price = models.FloatField()
