@@ -1,7 +1,9 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, loader
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
+from django.template import RequestContext,Context
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from web.models import Goods_name, Goods_in, Goods_out, Goods_profit
 
 # Create your views here.
@@ -11,35 +13,44 @@ def web_home(request):
 def web_info(request):
     return render(request, 'web/info.html')
 
-def web_name_input(request):
-    if request.method == "POST":
-        goods_name_html = request.POST.get('goods_name_html','')
-        goods_model_html = request.POST.get('goods_model_html','')
-        goods_firm_html = request.POST.get('goods_firm_html','')
-        try:
-            db_result = Goods_name.objects.create(name_name=goods_name_html, name_model=goods_model_html, name_firm=goods_firm_html)
-        except:
-            db_result = 1
-#        if db_result == 1:
-#           
-#        print(db_result)
-#    else:
-        
-    return render(request, 'web/name_input.html')
-
+@csrf_exempt
 def web_name_see(request):
-    return render(request, 'web/name_see.html')
+    if request.method == "POST":
+        goods_name_html = request.POST.get('web_name_html','')
+        goods_model_html = request.POST.get('web_model_html','')
+        goods_firm_html = request.POST.get('web_firm_html','')
+        goods_add_html = request.POST.get('web_add_html','')
+        goods_select_html = request.POST.get('web_select_html','')
+        if goods_add_html == "新增":
+            try:
+                db_result = Goods_name.objects.create(name_name=goods_name_html, name_model=goods_model_html, name_firm=goods_firm_html)
+            except:
+                db_result = 1
+            name_info = Goods_name.objects.all()
+            context = {'name_info': name_info}
+            return render(request,'web/name_see.html',context)
+        elif goods_select_html == "查询":
+            goods_condition = {}
+            if goods_name_html != "":
+                goods_condition["name_name__contains"] = goods_name_html
+            if goods_model_html != "":
+                goods_condition["name_model__contains"] = goods_model_html
+            if goods_firm_html != "":
+                goods_condition["name_firm__contains"] = goods_firm_html
+            if not goods_condition :
+                name_info = Goods_name.objects.all()
+            else:
+                name_info = Goods_name.objects.filter(**goods_condition)
+            context = {'name_info': name_info}
+            return render(request,'web/name_see.html',context)
 
-
-def web_in_input(request):
-    return render(request, 'web/info.html')
+    else:
+        name_info = Goods_name.objects.all()
+        context = {'name_info': name_info}
+        return render(request,'web/name_see.html',context)
 
 
 def web_in_see(request):
-    return render(request, 'web/info.html')
-
-
-def web_out_input(request):
     return render(request, 'web/info.html')
 
 

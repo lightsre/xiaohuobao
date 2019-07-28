@@ -12,26 +12,69 @@
 
 <!-- 定义放置文章标题的div容器 -->
 <div class="container">
+    <h2>商品信息</h2>  
     <div class="row mt-2">
-
-        {% for article in articles %}
-        <!-- 文章内容 -->
-        <div class="col-4 mb-4">
-        <!-- 卡片容器 -->
-            <div class="card h-100">
-                <!-- 标题 -->
-                <h4 class="card-header">{{ article.title }}</h4>
-                <!-- 摘要 -->
-                <div class="card-body">
-                    <p class="card-text">{{ article.body|slice:'100' }}...</p>
-                </div>
-                <!-- 注脚 -->
-                <div class="card-footer">
-                    <a href="#" class="btn btn-primary">阅读本文</a>
-                </div>
+        
+        <form  class="form-inline" method="post" action="/web/namesee/">
+             <!--<ul class="nav nav-tabs nav-stacked">-->
+            {% csrf_token %} 
+            <div class="form-group mx-sm-2 mb-2">
+                <input  class="form-control"  type="text"  placeholder="名称" id="web_name_html"  name="web_name_html"  />
             </div>
-        </div>
-        {% endfor %}
+            <div class="form-group mx-sm-2 mb-2">
+                <input  class="form-control"  type="text"  placeholder="型号" id="web_model_html"  name="web_model_html"  />
+            </div>
+            <div class="form-group mx-sm-2 mb-2">
+                <input  class="form-control"  type="text"  placeholder="厂商" id="web_firm_html"  name="web_firm_html"  />
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+                <input  class="btn btn-primary btn-sm" type="submit" value="查询" id="web_select_html" name="web_select_html">
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+                <input  class="btn btn-primary btn-sm" type="submit" value="新增" id="web_add_html" name="web_add_html">
+            </div>
+        </form>
+
+        <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th style="width:50px">序号</th>
+                    <th style="width:90px">名称</th>
+                    <th style="width:160px">型号</th>
+                    <th style="width:160px">厂商</th>
+                  </tr>
+                </thead>
+                <tbody>
+  
+                  {% for list in name_info %}
+                      <tr>
+                            <td>
+                                {{forloop.counter}}
+                            </td>
+                            <td>
+                                {{list.name_name}}
+                            </td>
+                            <td>
+                                {{list.name_model}}
+                            </td>
+                            <td>
+                                {{list.name_firm}}
+                            </td>
+                      </tr>
+                  {% endfor %}
+  
+                </tbody>
+              </table>
+              <p>
+              {% if name_info.has_previous %}
+                <a href="?page={{ name_info.previous_page_number }}">Previous</a>
+                {% endif %}
+                {# name_info.paginator.number_pages 返回总页数 #}
+                Page {{ name_info.number }} of {{ name_info.paginator.num_pages }}.
+              {% if name_info.has_next %}
+                <a href="?page={{ name_info.next_page_number }}">Next</a>
+              {% endif %}
+              </p>
 
     </div>
 </div>
