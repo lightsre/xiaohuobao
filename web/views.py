@@ -63,9 +63,13 @@ def web_in_see(request):
         elif goods_select_html == "查询":
             goods_condition = []
             if goods_price_html != "":
-                goods_condition.append('a.in_price=%s' % goods_price_html)
+                goods_condition.append('in_price=%s' % goods_price_html)
             if goods_number_html != "":
-                goods_condition.append('a.in_number=%s' % goods_number_html)
+                goods_condition.append('in_number=%s' % goods_number_html)
+            if goods_nameid_html != "":
+                goods_condition.append('name_id=%s' % goods_nameid_html)
+            if goods_starttime_html != "" and goods_endtime_html != "":
+                goods_condition.append('in_time between %s AND %s' % (goods_starttime_html, goods_endtime_html))
             goods_condition = ' or '.join(goods_condition)
             if not goods_condition :
 		in_info = Goods_in.objects.raw('''SELECT a.in_id, a.in_price, a.in_number, a.in_time, b.name_name, b.name_model, b.name_firm FROM abcd_Goods_in a LEFT JOIN abcd_Goods_name b ON a.name_id_id = b.name_id ''')
