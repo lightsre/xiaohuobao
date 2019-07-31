@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext,Context
+from django.db import connection
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from web.models import Goods_name, Goods_in, Goods_out, Goods_profit
 
@@ -21,8 +22,7 @@ def web_name_see(request):
         goods_firm_html = request.POST.get('web_firm_html','')
         goods_add_html = request.POST.get('web_add_html','')
         goods_select_html = request.POST.get('web_select_html','')
-        goods_url_html = request.path
-        print(goods_url_html)
+
         if goods_add_html == "新增":
             try:
                 db_result = Goods_name.objects.create(name_name=goods_name_html, name_model=goods_model_html, name_firm=goods_firm_html)
@@ -47,78 +47,52 @@ def web_name_see(request):
     return render(request,'web/name_see.html',context)
 
 @csrf_exempt
-def web_in_see(request):
+def web_trade_see(request):
+    db_command=connection.cursor()
+    goods_url_html = request.path
+    if goods_url_html == "/web/insee/":
+        db_name="web_Goods_in"
+    elif goods_url_html == "/web/outsee/":
+        db_name="web_Goods_out"
+    sql_command='SELECT a.in_id, a.in_price, a.in_number, a.in_time, b.name_name, b.name_model, b.name_firm FROM %s a LEFT JOIN web_Goods_name b ON a.name_id = b.name_id ' % db_name
     if request.method == "POST":
         goods_price_html = request.POST.get('web_price_html','')
         goods_number_html = request.POST.get('web_number_html','')
+        goods_name_html = request.POST.get('web_name_html','')
+        goods_model_html = request.POST.get('web_model_html','')
+        goods_firm_html = request.POST.get('web_firm_html','')
         goods_starttime_html = request.POST.get('web_starttime_html','')
         goods_endtime_html = request.POST.get('web_endtime_html','')
-        goods_nameid_html = request.POST.get('web_nameid_html','')
+
         goods_add_html = request.POST.get('web_add_html','')
         goods_select_html = request.POST.get('web_select_html','')
+ 
         if goods_add_html == "新增":
             try:
                 db_result = Goods_in.objects.create(name_id=goods_nameid_html, in_price=goods_price_html, in_number=goods_number_html)
             except:
                 db_result = 1
-            in_info = Goods_in.objects.raw('''SELECT a.in_id, a.in_price, a.in_number, a.in_time, b.name_name, b.name_model, b.name_firm FROM web_Goods_in a LEFT JOIN web_Goods_name b ON a.name_id_id = b.name_id ''')
         elif goods_select_html == "查询":
             goods_condition = []
             if goods_price_html != "":
-                goods_condition.append('in_price=%s' % goods_price_html)
+                goods_condition.append('a.in_price=%s' % goods_price_html)
             if goods_number_html != "":
-                goods_condition.append('in_number=%s' % goods_number_html)
-            if goods_nameid_html != "":
-                goods_condition.append('name_id=%s' % goods_nameid_html)
+                goods_condition.append('a.in_number=%s' % goods_number_html)
+            if goods_name_html != "":
+                goods_condition.append('b.name_name=%s' % goods_name_html)
+            if goods_model_html != "":
+                goods_condition.append('b.name_model=%s' % goods_model_html)
+            if goods_firm_html != "":
+                goods_condition.append('b.name_firm=%s' % goods_firm_html)
             if goods_starttime_html != "" and goods_endtime_html != "":
-                goods_condition.append('in_time between %s AND %s' % (goods_starttime_html, goods_endtime_html))
+                goods_condition.append('in_time between "%s" AND "%s"' % (goods_starttime_html, goods_endtime_html))
             goods_condition = ' or '.join(goods_condition)
-            if not goods_condition :
-                in_info = Goods_in.objects.raw('''SELECT a.in_id, a.in_price, a.in_number, a.in_time, b.name_name, b.name_model, b.name_firm FROM web_Goods_in a LEFT JOIN web_Goods_name b ON a.name_id_id = b.name_id ''')
-            else:
-                in_info = Goods_in.objects.raw('''SELECT a.in_id, a.in_price, a.in_number, a.in_time, b.name_name, b.name_model, b.name_firm FROM web_Goods_in a LEFT JOIN web_Goods_name b ON a.name_id_id = b.name_id WHERE ( %s ) ''' % goods_condition)
-    else:
-        in_info = Goods_in.objects.raw('''SELECT a.in_id, a.in_price, a.in_number, a.in_time, b.name_name, b.name_model, b.name_firm FROM web_Goods_in a LEFT JOIN web_Goods_name b ON a.name_id_id = b.name_id ''')
-        
-    context = {'in_info': in_info}
-    return render(request,'web/in_see.html',context)
-
-@csrf_exempt
-def web_out_see(request):
-    if request.method == "POST":
-        goods_price_html = request.POST.get('web_price_html','')
-        goods_number_html = request.POST.get('web_number_html','')
-        goods_starttime_html = request.POST.get('web_starttime_html','')
-        goods_endtime_html = request.POST.get('web_endtime_html','')
-        goods_nameid_html = request.POST.get('web_nameid_html','')
-        goods_add_html = request.POST.get('web_add_html','')
-        goods_select_html = request.POST.get('web_select_html','')
-        if goods_add_html == "新增":
-            try:
-                db_result = Goods_out.objects.create(name_id=goods_nameid_html, out_price=goods_price_html, out_number=goods_number_html)
-            except:
-                db_result = 1
-            out_info = Goods_out.objects.raw('''SELECT a.out_id, a.out_price, a.out_number, a.out_time, b.name_name, b.name_model, b.name_firm FROM web_Goods_in a LEFT JOIN web_Goods_name b ON a.name_id = b.name_id ''')
-        elif goods_select_html == "查询":
-            goods_condition = []
-            if goods_price_html != "":
-                goods_condition.append('in_price=%s' % goods_price_html)
-            if goods_number_html != "":
-                goods_condition.append('in_number=%s' % goods_number_html)
-            if goods_nameid_html != "":
-                goods_condition.append('name_id=%s' % goods_nameid_html)
-            if goods_starttime_html != "" and goods_endtime_html != "":
-                goods_condition.append('in_time between %s AND %s' % (goods_starttime_html, goods_endtime_html))
-            goods_condition = ' or '.join(goods_condition)
-            if not goods_condition :
-                out_info = Goods_out.objects.raw('''SELECT a.out_id, a.out_price, a.out_number, a.out_time, b.name_name, b.name_model, b.name_firm FROM web_Goods_in a LEFT JOIN web_Goods_name b ON a.name_id = b.name_id ''')
-            else:
-                out_info = Goods_out.objects.raw('''SELECT a.out_id, a.out_price, a.out_number, a.out_time, b.name_name, b.name_model, b.name_firm FROM web_Goods_in a LEFT JOIN web_Goods_name b ON a.name_id = b.name_id  WHERE ( %s ) % goods_condition''')
-    else:
-        out_info = Goods_out.objects.raw('''SELECT a.out_id, a.out_price, a.out_number, a.out_time, b.name_name, b.name_model, b.name_firm FROM web_Goods_in a LEFT JOIN web_Goods_name b ON a.name_id = b.name_id ''')
-        
-    context = {'in_info': in_info}
-    return render(request,'web/out_see.html',context)
+            if goods_condition:
+                sql_command = sql_command + "WHERE ( %s )" % goods_condition
+    trade_communt = db_command.execute(sql_command)  
+    trade_info = db_command.fetchall()
+    context = {'trade_info': trade_info}
+    return render(request,'web/trade_see.html',context)
 
 @csrf_exempt
 def web_profit_see(request):
