@@ -11,31 +11,34 @@
 {% block content %}
 <!-- 定义放置文章标题的div容器 -->
 <div class="container">
-    <h2>商品信息</h2>  
+    <h2>{{ web_title }}</h2>  
     <div class="row mt-2">
         
-        <form  class="form-inline" method="post" action="/web/namesee/">
+        <form  class="form-inline" method="post" action="{{ web_url }}">
              <!--<ul class="nav nav-tabs nav-stacked">-->
             {% csrf_token %} 
             <div class="form-group mx-sm-2 mb-2">
-                <input  class="form-control"  type="text"  placeholder="名称" id="web_name_html"  name="web_name_html"  />
+                <select id="web_nameid_html" name="web_nameid_html" class="form-control">
+                    <option value="" selected>选择你的商品</option>
+                  {% for list in name_info %}
+                    <option value={{ list.name_id }}>{{ list.name_name }} / {{ list.name_model }} / {{  list.name_firm }}</option>
+                  {% endfor %}
+                </select>
             </div>
-            <div class="form-group mx-sm-2 mb-2">
-                <input  class="form-control"  type="text"  placeholder="型号" id="web_model_html"  name="web_model_html"  />
-            </div>
-            <div class="form-group mx-sm-2 mb-2">
-                <input  class="form-control"  type="text"  placeholder="厂商" id="web_firm_html"  name="web_firm_html"  />
-            </div>
-            <div class="form-group mx-sm-2 mb-2">
+
+            <div class="form-group mx-sm-1 mb-1">
                 <input  class="form-control"  type="text"  placeholder="价格" id="web_price_html"  name="web_price_html"  />
             </div>
-            <div class="form-group mx-sm-2 mb-2">
+            <div class="form-group mx-sm-1 mb-1">
+                <input  class="form-control"  type="text"  placeholder="数量" id="web_number_html"  name="web_number_html"  />
+            </div>
+            <div class="form-group mx-sm-1 mb-1">
                 <input  class="form-control input" type="text" placeholder="开始时间" id="web_starttime_html"  name="web_starttime_html"  />
             </div>
-            <div class="form-group mx-sm-2 mb-2">
+            <div class="form-group mx-sm-1 mb-1">
                 <input  class="form-control input" type="text"  placeholder="结束时间" id="web_endtime_html"  name="web_endtime_html"  />
             </div>
-            <div class="form-group mx-sm-3 mb-2">
+            <div class="form-group mx-sm-3 mb-1">
                 <input  class="btn btn-primary btn-sm" type="submit" value="查询" id="web_select_html" name="web_select_html">
             </div>
             <div class="form-group mx-sm-3 mb-2">
