@@ -61,7 +61,7 @@ def web_trade_see(request):
         web_title = "出货账单"
         web_url = goods_url_html
         db_goods = Goods_out
-    sql_command='SELECT a.%s_id, a.%s_price, a.%s_number, a.%s_time, b.name_name, b.name_model, b.name_firm FROM web_Goods_%s a LEFT JOIN web_Goods_name b ON a.name_id = b.name_id ' % (db_name, db_name, db_name, db_name, db_name)
+    sql_command='SELECT a.%s_id, a.%s_price, a.%s_number, b.name_name, b.name_model, b.name_firm FROM web_Goods_%s a LEFT JOIN web_Goods_name b ON a.name_id = b.name_id ' % (db_name, db_name, db_name, db_name)
     if request.method == "POST":
         goods_price_html = request.POST.get('web_price_html','')
         goods_number_html = request.POST.get('web_number_html','')
@@ -98,7 +98,22 @@ def web_trade_see(request):
 
 @csrf_exempt
 def web_profit_see(request):
-    return render(request, 'web/info.html')
+    db_command=connection.cursor()
+    db_name = "profit"
+    sql_command='SELECT a.%s_id, a.%s_price, a.%s_number, a.all_price, b.name_name, b.name_model, b.name_firm FROM web_Goods_%s a LEFT JOIN web_Goods_name b ON a.name_id = b.name_id ' % (db_name, db_name, db_name, db_name)
+    if request.method == "POST":
+        goods_nameid_html = request.POST.get('web_nameid_html','')
+        goods_condition = []
+        if goods_nameid_html != "":
+            goods_condition.append('b.name_id=%s' % goods_nameid_html)
+        goods_condition = ' or '.join(goods_condition)
+        if goods_condition:
+            sql_command = sql_command + "WHERE ( %s )" % goods_condition
+    name_info = Goods_name.objects.all()
+    profit_communt = db_command.execute(sql_command)  
+    profit_info = db_command.fetchall()
+    context = {'profit_info': profit_info, 'name_info': name_info}
+    return render(request,'web/profit_see.html',context)
 
 
 
