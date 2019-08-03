@@ -39,6 +39,7 @@
 ![](https://raw.githubusercontent.com/lightsre/xiaohuobao/master/screenshots/user-first-name.png)
 
 4.浏览器打开http://IP:8000 并输入创建的admin用户登陆
+
 ![](https://raw.githubusercontent.com/lightsre/xiaohuobao/master/screenshots/user-lgoin.png)
 
 5.首先进入之后，就是本产品的介绍页面
