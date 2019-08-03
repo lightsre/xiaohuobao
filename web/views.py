@@ -82,15 +82,18 @@ def web_trade_see(request):
                 db_result = 1
             if db_result != 1:
                 goods_exist = Goods_profit.objects.filter(name_id=goods_nameid_html)
-                if len(goods_exist) != 0:                
-                    if db_name == "in":
-                        goods_exist.stories_field = F('stock_number') + goods_number_html
-                        goods_exist.stories_field = F('profit_price') - goods_price_html                      
+                if len(goods_exist) == 0:
+                    Goods_profit.objects.create(name_id=goods_nameid_html, stock_number=0, profit_number=0, profit_price=0) 
+                goods_info = Goods_profit.objects.filter(name_id=goods_nameid_html)
+                if len(goods_info) != 0:               
+                    if db_name == "in":                       
+                        goods_info.update(stock_number=F('stock_number') + goods_number_html)
+                        goods_info.update(cost_price=F('cost_price') + goods_price_html)                   
                     elif db_name == "out":
-                        goods_exist.stories_field = F('stock_number') - goods_number_html
-                        goods_exist.stories_field = F('profit_number') + goods_number_html
-                        goods_exist.stories_field = F('profit_price') + goods_price_html
-                    goods_exist.save()
+                        goods_info.update(stock_number=F('stock_number') - goods_number_html)
+                        goods_info.update(profit_number=F('profit_number') + goods_number_html)
+                        goods_info.update(profit_price=F('profit_price') + goods_price_html)
+                
         elif goods_select_html == "查询":
             goods_condition = []
             if goods_price_html != "":
@@ -114,7 +117,7 @@ def web_trade_see(request):
 def web_profit_see(request):
     db_command=connection.cursor()
     db_name = "profit"
-    sql_command='SELECT a.%s_id, a.%s_price, a.%s_number, a.all_price, b.name_name, b.name_model, b.name_firm FROM web_Goods_%s a LEFT JOIN web_Goods_name b ON a.name_id = b.name_id ' % (db_name, db_name, db_name, db_name)
+    sql_command='SELECT a.profit_id, a.profit_price, a.profit_number, a.stock_number, b.name_name, b.name_model, b.name_firm FROM web_Goods_profit a LEFT JOIN web_Goods_name b ON a.name_id = b.name_id '
     if request.method == "POST":
         goods_nameid_html = request.POST.get('web_nameid_html','')
         goods_condition = []
