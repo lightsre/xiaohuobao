@@ -37,8 +37,10 @@
                     <th style="width:90px">名称</th>
                     <th style="width:160px">型号</th>
                     <th style="width:160px">厂商</th>
-                    <th style="width:160px">价格</th>
-                    <th style="width:160px">数量</th>
+                    <th style="width:160px">库存</th>
+                    <th style="width:160px">成本</th>
+                    <th style="width:160px">销量</th>
+                    <th style="width:160px">盈利</th>
 
                   </tr>
                 </thead>
@@ -50,19 +52,25 @@
                                 {{forloop.counter}}
                             </td>
                             <td>
-                                {{ list.4 }}
-                            </td>
-                            <td>
                                 {{ list.5 }}
                             </td>
                             <td>
                                 {{ list.6 }}
                             </td>
                             <td>
-                                {{ list.1 }}
+                                {{ list.7 }}
+                            </td>
+                            <td>
+                                {{ list.3 }}
+                            </td>
+                            <td>
+                                {{ list.4 }}
                             </td>
                             <td>
                                 {{ list.2 }}
+                            </td>
+                            <td>
+                                {{ list.1 }}
                             </td>
                       </tr>
                   {% endfor %}

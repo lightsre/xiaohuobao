@@ -83,7 +83,7 @@ def web_trade_see(request):
             if db_result != 1:
                 goods_exist = Goods_profit.objects.filter(name_id=goods_nameid_html)
                 if len(goods_exist) == 0:
-                    Goods_profit.objects.create(name_id=goods_nameid_html, stock_number=0, profit_number=0, profit_price=0) 
+                    Goods_profit.objects.create(name_id=goods_nameid_html, stock_number=0, cost_price=0, profit_number=0, profit_price=0) 
                 goods_info = Goods_profit.objects.filter(name_id=goods_nameid_html)
                 if len(goods_info) != 0:               
                     if db_name == "in":                       
@@ -117,7 +117,7 @@ def web_trade_see(request):
 def web_profit_see(request):
     db_command=connection.cursor()
     db_name = "profit"
-    sql_command='SELECT a.profit_id, a.profit_price, a.profit_number, a.stock_number, b.name_name, b.name_model, b.name_firm FROM web_Goods_profit a LEFT JOIN web_Goods_name b ON a.name_id = b.name_id '
+    sql_command='SELECT a.profit_id, a.profit_price, a.profit_number, a.stock_number, a.cost_price, b.name_name, b.name_model, b.name_firm FROM web_Goods_profit a LEFT JOIN web_Goods_name b ON a.name_id = b.name_id '
     if request.method == "POST":
         goods_nameid_html = request.POST.get('web_nameid_html','')
         goods_condition = []
