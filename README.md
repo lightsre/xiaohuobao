@@ -27,7 +27,20 @@
   ```
 
 #### 界面预览
-待更新...
+#### 界面预览
+1. 浏览器打开http://IP:8000/admin  输入刚才创建的账号密码
+
+![](https://raw.githubusercontent.com/lightsre/xiaohuobao/master/screenshots/admin-login.png)
+
+2. 创建普通账号，最好多创建一个admin管理账号，admin用户有特效
+![](https://raw.githubusercontent.com/lightsre/xiaohuobao/master/screenshots/create-user.png)
+
+3. 由于后面需要用到first用户名称来识别员工，所以配置first名，别忘了点右下角的保存
+![](https://raw.githubusercontent.com/lightsre/xiaohuobao/master/screenshots/user-first-name.png)
+
+4.浏览器打开http://IP:8000 并输入创建的test用户登陆
+
+![](https://raw.githubusercontent.com/lightsre/xiaohuobao/master/screenshots/user-lgoin.png)
 
 
 ### 联系方式
