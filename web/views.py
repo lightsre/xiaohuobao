@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext,Context
 from django.db import connection
+from django.db.models import F
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from web.models import Goods_name, Goods_in, Goods_out, Goods_profit
 
@@ -75,8 +76,21 @@ def web_trade_see(request):
                 db_info = {'name_id': goods_nameid_html, '%s_price' % db_name: goods_price_html, '%s_number' % db_name: goods_number_html }
                 #db_result = db_goods.objects.create(name_id=goods_nameid_html, in_price=goods_price_html, in_number=goods_number_html)
                 db_result = db_goods.objects.create(**db_info)
+                print(db_result)
+                print(type(db_result))
             except:
                 db_result = 1
+            if db_result != 1:
+                goods_exist = Goods_profit.objects.filter(name_id=goods_nameid_html)
+                if len(goods_exist) != 0:                
+                    if db_name == "in":
+                        goods_exist.stories_field = F('stock_number') + goods_number_html
+                        goods_exist.stories_field = F('profit_price') - goods_price_html                      
+                    elif db_name == "out":
+                        goods_exist.stories_field = F('stock_number') - goods_number_html
+                        goods_exist.stories_field = F('profit_number') + goods_number_html
+                        goods_exist.stories_field = F('profit_price') + goods_price_html
+                    goods_exist.save()
         elif goods_select_html == "查询":
             goods_condition = []
             if goods_price_html != "":

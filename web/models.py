@@ -24,6 +24,6 @@ class Goods_out(models.Model):
 class Goods_profit(models.Model):
     profit_id = models.AutoField(primary_key=True)
     name_id = models.IntegerField()
+    stock_number = models.IntegerField()
     profit_number = models.IntegerField()
     profit_price = models.FloatField()
-    all_price = models.FloatField()
