@@ -15,6 +15,7 @@
 
 ### Linux & Mac 环境准备
 - python ( >= 3.7 )
+- yum install mysql-devel -y
 - pip install -r requirements.txt
 
 ### 启动方法
