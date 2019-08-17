@@ -10,4 +10,5 @@ urlpatterns = [
     path('insee/', views.web_trade_see, name='in_see'),
     path('outsee/', views.web_trade_see, name='out_see'),
     path('profitsee/', views.web_profit_see, name='profit_see'),
+    path('recordsee/', views.web_user_record, name='record_see'),
 ]

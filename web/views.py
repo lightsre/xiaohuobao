@@ -6,7 +6,7 @@ from django.template import RequestContext,Context
 from django.db import connection
 from django.db.models import F
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from web.models import Goods_name, Goods_in, Goods_out, Goods_profit
+from web.models import Goods_name, Goods_in, Goods_out, Goods_profit, User_record
 
 # Create your views here.
 def web_home(request):
@@ -132,7 +132,40 @@ def web_profit_see(request):
     context = {'profit_info': profit_info, 'name_info': name_info}
     return render(request,'web/profit_see.html',context)
 
+@csrf_exempt
+def web_user_record(request):
+    if request.method == "POST":
+        user_name_html = request.POST.get('user_name_html','')
+        user_phone_html = request.POST.get('user_phone_html','')
+        car_type_html = request.POST.get('car_type_html','')
+        car_num_html = request.POST.get('car_num_html','')
+        repair_project_html = request.POST.get('repair_project_html','')
+        record_remarks_html = request.POST.get('record_remarks_html','')
+        record_price_html = request.POST.get('record_price_html','')
 
+        if record_add_html == "新增":
+            if user_name_html != "" and user_phone_html !="" and repair_project_html !="" and record_price_html !="":
+                try:
+                    db_result = User_record.objects.create(user_name=user_name_html, user_phone=user_phone_html, car_type=car_type_html, car_num=car_num_html, repair_project=repair_project_html, record_remarks=record_remarks_html, record_price=record_price_html)
+                except:
+                    db_result = 1
+            name_info = User_record.objects.all()
+        elif record_select_html == "查询":
+            record_condition = {}
+            if user_name_html != "":
+                record_condition["user_name__contains"] = user_name_html
+            if user_phone_html != "":
+                record_condition["user_phone__contains"] = user_phone_html
+            if repair_project_html != "":
+                record_condition["repair_project__contains"] = repair_project_html
+            if not record_condition :
+                record_info = User_record.objects.all()
+            else:
+                record_info = User_record.objects.filter(**record_condition)
+    else:
+        record_info = User_record.objects.all()
+    context = {'record_info': record_info}
+    return render(request,'web/record_see.html',context)    
 
 @csrf_exempt
 def login_view(request):

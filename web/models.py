@@ -28,3 +28,17 @@ class Goods_profit(models.Model):
     cost_price = models.FloatField()
     profit_number = models.IntegerField()
     profit_price = models.FloatField()
+
+class User_info(models.Model):
+    user_phone = models.CharField(max_length=12) 
+    user_name = models.CharField(max_length=100)
+
+class User_Record(models.Model):
+    user_name = models.CharField(max_length=100)
+    user_phone = models.CharField(max_length=12) 
+    car_type = models.CharField(max_length=100)
+    car_num = models.CharField(max_length=100)
+    repair_project = models.CharField(max_length=300)
+    record_remarks = models.CharField(max_length=300)
+    record_price = models.FloatField()
+    record_time = models.DateField(auto_now_add=True) 
