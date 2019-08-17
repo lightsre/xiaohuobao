@@ -62,7 +62,7 @@ def web_trade_see(request):
         web_title = "出货账单"
         web_url = goods_url_html
         db_goods = Goods_out
-    sql_command='SELECT a.%s_id, a.%s_price, a.%s_number, b.name_name, b.name_model, b.name_firm FROM web_Goods_%s a LEFT JOIN web_Goods_name b ON a.name_id = b.name_id ' % (db_name, db_name, db_name, db_name)
+    sql_command='SELECT a.%s_id, a.%s_price, a.%s_number, b.name_name, b.name_model, b.name_firm FROM web_goods_%s a LEFT JOIN web_goods_name b ON a.name_id = b.name_id ' % (db_name, db_name, db_name, db_name)
     if request.method == "POST":
         goods_price_html = request.POST.get('web_price_html','')
         goods_number_html = request.POST.get('web_number_html','')
@@ -117,7 +117,7 @@ def web_trade_see(request):
 def web_profit_see(request):
     db_command=connection.cursor()
     db_name = "profit"
-    sql_command='SELECT a.profit_id, a.profit_price, a.profit_number, a.stock_number, a.cost_price, b.name_name, b.name_model, b.name_firm FROM web_Goods_profit a LEFT JOIN web_Goods_name b ON a.name_id = b.name_id '
+    sql_command='SELECT a.profit_id, a.profit_price, a.profit_number, a.stock_number, a.cost_price, b.name_name, b.name_model, b.name_firm FROM web_goods_profit a LEFT JOIN web_goods_name b ON a.name_id = b.name_id '
     if request.method == "POST":
         goods_nameid_html = request.POST.get('web_nameid_html','')
         goods_condition = []
