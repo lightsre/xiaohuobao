@@ -79,6 +79,7 @@ def web_trade_see(request):
                 print(db_result)
                 print(type(db_result))
             except:
+                print('新增失败')
                 db_result = 1
             if db_result != 1:
                 goods_exist = Goods_profit.objects.filter(name_id=goods_nameid_html)

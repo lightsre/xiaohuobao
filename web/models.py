@@ -29,10 +29,6 @@ class Goods_profit(models.Model):
     profit_number = models.IntegerField()
     profit_price = models.FloatField()
 
-class User_info(models.Model):
-    user_phone = models.CharField(max_length=12) 
-    user_name = models.CharField(max_length=100)
-
 class User_record(models.Model):
     user_name = models.CharField(max_length=100)
     user_phone = models.CharField(max_length=12) 
