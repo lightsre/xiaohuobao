@@ -33,7 +33,7 @@ class User_info(models.Model):
     user_phone = models.CharField(max_length=12) 
     user_name = models.CharField(max_length=100)
 
-class User_Record(models.Model):
+class User_record(models.Model):
     user_name = models.CharField(max_length=100)
     user_phone = models.CharField(max_length=12) 
     car_type = models.CharField(max_length=100)
