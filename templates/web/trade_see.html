@@ -20,7 +20,7 @@
             <div class="form-group mx-sm-2 mb-2">
                 <select id="web_nameid_html" name="web_nameid_html" class="form-control">
                     <option value="" selected>选择你的商品</option>
-                  {% for list in name_info %}
+                  {% for list in record_info %}
                     <option value={{ list.name_id }}>{{ list.name_name }} / {{ list.name_model }} / {{  list.name_firm }}</option>
                   {% endfor %}
                 </select>

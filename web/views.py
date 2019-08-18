@@ -143,6 +143,8 @@ def web_user_record(request):
         repair_project_html = request.POST.get('repair_project_html','')
         record_remarks_html = request.POST.get('record_remarks_html','')
         record_price_html = request.POST.get('record_price_html','')
+        record_add_html = request.POST.get('web_add_html','')
+        record_select_html = request.POST.get('web_select_html','')
 
         if record_add_html == "新增":
             if user_name_html != "" and user_phone_html !="" and repair_project_html !="" and record_price_html !="":
@@ -150,7 +152,7 @@ def web_user_record(request):
                     db_result = User_record.objects.create(user_name=user_name_html, user_phone=user_phone_html, car_type=car_type_html, car_num=car_num_html, repair_project=repair_project_html, record_remarks=record_remarks_html, record_price=record_price_html)
                 except:
                     db_result = 1
-            name_info = User_record.objects.all()
+            record_info = User_record.objects.all()
         elif record_select_html == "查询":
             record_condition = {}
             if user_name_html != "":
