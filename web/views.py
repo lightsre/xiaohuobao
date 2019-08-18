@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext,Context
+from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.db.models import F
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -16,6 +17,7 @@ def web_info(request):
     return render(request, 'web/info.html')
 
 @csrf_exempt
+@login_required
 def web_name_see(request):
     if request.method == "POST":
         goods_name_html = request.POST.get('web_name_html','')
@@ -49,6 +51,7 @@ def web_name_see(request):
     return render(request,'web/name_see.html',context)
 
 @csrf_exempt
+@login_required
 def web_trade_see(request):
     db_command=connection.cursor()
     goods_url_html = request.path
@@ -115,6 +118,7 @@ def web_trade_see(request):
     return render(request,'web/trade_see.html',context)
 
 @csrf_exempt
+@login_required
 def web_profit_see(request):
     db_command=connection.cursor()
     db_name = "profit"
@@ -134,6 +138,7 @@ def web_profit_see(request):
     return render(request,'web/profit_see.html',context)
 
 @csrf_exempt
+@login_required
 def web_user_record(request):
     if request.method == "POST":
         user_name_html = request.POST.get('user_name_html','')
