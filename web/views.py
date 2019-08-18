@@ -143,6 +143,7 @@ def web_user_record(request):
         repair_project_html = request.POST.get('repair_project_html','')
         record_remarks_html = request.POST.get('record_remarks_html','')
         record_price_html = request.POST.get('record_price_html','')
+        record_status_html = request.POST.get('record_status_html','')
         record_add_html = request.POST.get('web_add_html','')
         record_select_html = request.POST.get('web_select_html','')
 
@@ -164,7 +165,10 @@ def web_user_record(request):
             if not record_condition :
                 record_info = User_record.objects.all()
             else:
-                record_info = User_record.objects.filter(**record_condition)
+                if record_status_html != "":
+                    record_info = User_record.objects.filter(**record_condition, record_status=record_status_html)
+                else:
+                    record_info = User_record.objects.filter(**record_condition)
     else:
         record_info = User_record.objects.all()
     context = {'record_info': record_info}

@@ -39,7 +39,12 @@
             <div class="form-group mx-sm-2 mb-2">
                 <input  class="form-control"  type="text"  placeholder="备注" id="record_remarks_html"  name="record_remarks_html"  />
             </div>
-
+            <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="False" id="record_status_html" name="record_status_html">
+                    <label class="form-check-label" for="record_status_html">
+                      未完成
+                    </label>
+                </div>
             <div class="form-group mx-sm-3 mb-2">
                 <input  class="btn btn-primary btn-sm" type="submit" value="查询" id="web_select_html" name="web_select_html">
             </div>
@@ -51,7 +56,7 @@
         <table class="table table-bordered">
                 <thead class="thead-dark">
                   <tr>
-                    <th style="width:50px">序号</th>
+                    <th style="width:50px">订单号</th>
                     <th style="width:90px">姓名</th>
                     <th style="width:160px">电话</th>
                     <th style="width:160px">车型</th>
@@ -59,14 +64,17 @@
                     <th style="width:160px">维修项目</th>
                     <th style="width:160px">金额</th>
                     <th style="width:160px">备注</th>
+                    <th style="width:160px">完成状态</th>
+                    <th style="width:160px">日期</th>
+                    <th style="width:160px">操作</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody >
   
                   {% for list in record_info %}
                       <tr>
-                            <td>
-                                {{forloop.counter}}
+                            <td id="td_record_id" name="td_record_id">
+                                {{list.record_id}}
                             </td>
                             <td>
                                 {{list.user_name}}
@@ -88,7 +96,19 @@
                             </td>
                             <td>
                                 {{list.record_remarks}}
-                            </td>                            
+                            </td> 
+                            <td>
+                                    {{list.record_status}}
+                            </td>
+                            <td>
+                                {{list.record_time}}
+                            </td>  
+                            <td style="word-break:break-all" width="100">
+                                    <nobr>
+                                    <button class="btn btn-primary btn-sm" type="submit" onclick="ChangeStatus(this)">更改</button>
+                                    <button class="btn btn-primary btn-sm" type="submit" onclick="Del(this)">删除</button>
+                                    </nobr>
+                            </td>                         
                       </tr>
                   {% endfor %}
   
@@ -98,3 +118,43 @@
     </div>
 </div>
 {% endblock content %}
+
+<script>
+    function ChangeStatus(args){
+        alert(args);
+        var td_record_id = $(args).parent().parent().find(".td_record_id").text();
+        var msg = "你完成了这条纪录吗？\n\n请确认！"; 
+        if (confirm(msg)==true){ 
+            $.ajax({
+                    url: "/web/recordstatus/",
+                    type: "POST",
+                    timeout : 0,
+                    dataType: "json",
+                    data: {
+                        "td_record_id": td_record_id,
+                    },
+                    success: function (msg){
+                        data=msg.result_data
+                        console.log(data)
+                        if (data == 1) {
+                             window.location.reload();
+                             //window.location.href = '/property_details';
+                        }
+                        else if (data == 2){
+                            alert("更改失败");
+                        }
+                        else{
+                            alert("更改失败");
+                        }      
+                    },
+                    error: function(msg){
+                        data=msg.result_data
+                        console.log(data)
+                        alert("更改失败");
+                    },
+                })       
+        }
+
+    }
+
+</script>

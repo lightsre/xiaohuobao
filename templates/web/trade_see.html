@@ -20,7 +20,7 @@
             <div class="form-group mx-sm-2 mb-2">
                 <select id="web_nameid_html" name="web_nameid_html" class="form-control">
                     <option value="" selected>选择你的商品</option>
-                  {% for list in record_info %}
+                  {% for list in name_info %}
                     <option value={{ list.name_id }}>{{ list.name_name }} / {{ list.name_model }} / {{  list.name_firm }}</option>
                   {% endfor %}
                 </select>
@@ -38,10 +38,10 @@
             <div class="form-group mx-sm-1 mb-1">
                 <input  class="form-control input" type="text"  placeholder="结束时间" id="web_endtime_html"  name="web_endtime_html"  />
             </div>
-            <div class="form-group mx-sm-3 mb-1">
+            <div class="form-group mx-sm-1 mb-1">
                 <input  class="btn btn-primary btn-sm" type="submit" value="查询" id="web_select_html" name="web_select_html">
             </div>
-            <div class="form-group mx-sm-3 mb-2">
+            <div class="form-group mx-sm-1 mb-1">
                 <input  class="btn btn-primary btn-sm" type="submit" value="新增" id="web_add_html" name="web_add_html">
             </div>
         </form>

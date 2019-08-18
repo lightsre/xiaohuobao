@@ -30,6 +30,7 @@ class Goods_profit(models.Model):
     profit_price = models.FloatField()
 
 class User_record(models.Model):
+    record_id = models.AutoField(primary_key=True)
     user_name = models.CharField(max_length=100)
     user_phone = models.CharField(max_length=12) 
     car_type = models.CharField(max_length=100)
@@ -37,4 +38,5 @@ class User_record(models.Model):
     repair_project = models.CharField(max_length=300)
     record_remarks = models.CharField(max_length=300)
     record_price = models.FloatField()
+    record_status = models.BooleanField(default=False)
     record_time = models.DateField(auto_now_add=True) 
